@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+          integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <title>S-MART</title>
+    <style>
+    
+#myVideo {
+  position: fixed;
+  right: 0;
+  top:10%;
+ width: 50%;
+  height: 60%;
+  opacity:0.7 
+}
+body{
+background-color:#00043d;
+color:white;
+}
+    </style>
+</head>
+<body>
+<video autoplay muted loop id="myVideo">
+  <source src="https://media.istockphoto.com/id/1435999276/video/digital-technology-concept-cyber-security-data-protection-internet-network-connection.mp4?s=mp4-640x640-is&k=20&c=zaqFaR9ivpEeeecfyq0l3fbeXP74IJ3HRegWzHksOh8=">
+</video>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img th:src="@{/images/logo.png}"  src="../static/images/logo.png" width="auto" height="40" class="d-inline-block align-top" alt=""/>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto"></ul>
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/}" href="#">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a onclick="shopitem()" class="nav-link" th:href="@{/login}" href="#">Shop</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" th:href="@{/register}" href="#">Sign Up</a>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>Login</h2>
+            <p>Please fill out this to login</p>
+            <form th:action="@{/login}" method="post">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" id="email" placeholder="Your Email" class="form-control form-control-lg">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" class="form-control form-control-lg" placeholder="Password" name="password" id="password">
+                </div>
+                <div th:if="${msg}" class="alert alert-error text-danger">
+                    <h5>Invalid username or password.</h5>
+                </div>
+
+                <input type="submit" value="Login" class="btn btn-primary btn-block">
+                <br>
+                <span >Don't have an account <a class="linkControl" href="./register.html"
+                                                th:href="@{/register}">Register here</a></span>
+                <br>
+                <!-- <a href="" th:href="@{/forgotpassword}">Forgot password ?</a> -->
+            </form>
+            <br>
+            <h3>OR</h3>
+            <a href="/admin" class="btn btn-primary">Login Admin</a>
+
+        </div>
+
+    </div>
+</div>
+<script>
+    function shopitem()
+    {
+    	alert("Please login first");
+    }
+</script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

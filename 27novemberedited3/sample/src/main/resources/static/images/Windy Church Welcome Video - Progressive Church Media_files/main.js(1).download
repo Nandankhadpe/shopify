@@ -1,0 +1,229 @@
+// Main Shoptimizer js.
+;
+( function( $ ) {
+	'use strict';
+
+	$( '.post-type-archive-product #secondary' ).prepend( '<div class="close-drawer"></div>' );
+
+	// Toggle cart drawer.
+	$( '.mobile-filter' ).click( function( e ) {
+		e.stopPropagation();
+		e.preventDefault();
+		$( 'body' ).toggleClass( 'filter-open' );
+	} );
+
+	// Close the drawer when clicking/tapping outside it
+	$( document ).on( 'touchstart click', function( e ) {
+    var container = $( '.filter-open #secondary' );
+
+    if ( ! container.is( e.target ) && 0 === container.has( e.target ).length ) {
+        $( 'body' ).removeClass( 'filter-open' );
+    }
+	} );
+
+	// Close drawer - click the x icon
+	$( '.close-drawer' ).on( 'click', function() {
+		$( 'body' ).removeClass( 'filter-open' );
+	} );
+
+
+$( document ).ready( function() {
+var $loading = $( '#ajax-loading' ).hide();
+$( document )
+  .ajaxStart( function() {
+    $loading.show();
+  } )
+  .ajaxStop( function() {
+    $loading.hide();
+  } );
+
+  } );
+
+	// Reposition size guide link on the single product template.
+	$( '.button-wrapper' ).addClass( 'shoptimizer-size-guide' ).each( function() {
+    $( this ).insertAfter( $( this ).parent().find( '.product-widget' ) );
+} );
+
+
+	// Add a class if term description text or an image exists.
+  if ( 0 < $( '.term-description' ).length ) {
+      $( '.woocommerce-products-header' ).addClass( 'description-exists' );
+  }
+
+  if ( 0 < $( '.woocommerce-products-header img' ).length ) {
+      $( '.woocommerce-products-header' ).addClass( 'image-exists' );
+  }
+
+	// Overlay when a full width menu item is hovered over.
+	$( document ).ready( function() {
+    $( 'li.full-width' ).hover( function() {
+        $( '.site-content' ).addClass( 'overlay' );
+    },
+    function() {
+        $( '.site-content' ).removeClass( 'overlay' );
+    } );
+} );
+
+	// Add custom id to the single product variations table.
+	$( document ).ready( function() {
+		$( '.single-product table.variations' ).attr( 'id', 'variations-table' );
+	} );
+
+	// Mobile menu toggle.
+	$( document ).ready( function() {
+		$( '.menu-toggle' ).on( 'click', function() {
+			$( this ).toggleClass( 'active' );
+			$( 'body' ).toggleClass( 'mobile-toggled' );
+			$( window ).scrollTop( 0 );
+		return false;
+		} );
+	} );
+
+	// Reveal/Hide Mobile sub menus.
+	$( 'body .main-navigation ul.menu > li.menu-item-has-children > .caret' ).on( 'click', function( e ) {
+		$( this ).closest( 'li' ).toggleClass( 'dropdown-open' );
+		e.preventDefault();
+	} );
+
+	// Open the drawer if a product is added to the cart
+  $( '.product_type_simple.add_to_cart_button' ).on( 'click', function( e ) {
+		e.preventDefault();
+    $( 'body' ).toggleClass( 'drawer-open' );
+	} );
+
+	// Toggle cart drawer.
+	$( '.site-header-cart .cart-click' ).on( 'click', function( e ) {
+		e.stopPropagation();
+		e.preventDefault();
+		$( 'body' ).toggleClass( 'drawer-open' );
+	} );
+
+
+	// Close the drawer when clicking outside it
+	$( document ).mouseup( function( e ) {
+    var container = $( '.shoptimizer-mini-cart-wrap' );
+
+    if ( ! container.is( e.target ) && 0 === container.has( e.target ).length ) {
+        $( 'body' ).removeClass( 'drawer-open' );
+    }
+	} );
+
+	// Close drawer - click the x icon
+	$( '.close-drawer' ).on( 'click', function() {
+		$( 'body' ).removeClass( 'drawer-open' );
+	} );
+
+	// Scroll to top.
+	$( '.logo-mark a' ).click( function() {
+		$( 'html, body' ).animate( { scrollTop: 0 }, 'slow' );
+		return false;
+	} );
+
+	// Smooth scroll for sticky single product - only for variable and grouped items
+	$( 'a.variable-grouped-sticky[href*="#"]' ).on( 'click', function( e ) {
+		e.preventDefault();
+
+		$( 'html, body' ).animate( {
+			scrollTop: $( $( this ).attr( 'href' ) ).offset().top - 80}, 500, 'linear' );
+	} );
+
+
+var $j = jQuery.noConflict();
+
+$j( window ).on( 'load', function() {
+	'use strict';
+
+// Woo quantity buttons
+	shoptimizerWooQuantityButtons();
+} );
+
+$j( document ).ajaxComplete( function() {
+	'use strict';
+
+// Woo quantity buttons
+	shoptimizerWooQuantityButtons();
+} );
+
+/**
+	 * WooCommerce quantity buttons
+	 * @param {number} $quantitySelector Quantity.
+	 */
+function shoptimizerWooQuantityButtons( $quantitySelector ) {
+
+	var $quantityBoxes;
+
+	if ( ! $quantitySelector ) {
+		$quantitySelector = '.qty';
+	}
+
+	$quantityBoxes = $j( 'div.quantity:not(.buttons_added), td.quantity:not(.buttons_added)' ).find( $quantitySelector );
+
+	if ( $quantityBoxes && 'date' !== $quantityBoxes.prop( 'type' ) && 'hidden' !== $quantityBoxes.prop( 'type' ) ) {
+
+		// Add plus and minus icons
+		$quantityBoxes.parent().addClass( 'buttons_added' );
+        $quantityBoxes.after( '<div class="quantity-nav"><a href="javascript:void(0)" class="quantity-button quantity-up plus">&nbsp;</a><a href="javascript:void(0)" class="quantity-button quantity-down minus">&nbsp;</a></div>' );
+
+		// Target quantity inputs on product pages
+		$j( 'input' + $quantitySelector + ':not(.product-quantity input' + $quantitySelector + ')' ).each( function() {
+				var $min = parseFloat( $j( this ).attr( 'min' ) );
+
+				if ( $min && 0 < $min && parseFloat( $j( this ).val() ) < $min ) {
+					$j( this ).val( $min );
+				}
+		} );
+
+		$j( '.plus, .minus' ).unbind( 'click' );
+
+		$j( '.plus, .minus' ).on( 'click', function() {
+
+				// Get values
+				var $quantityBox     = $j( this ).closest( '.quantity' ).find( $quantitySelector ),
+					$currentQuantity = parseFloat( $quantityBox.val() ),
+					$maxQuantity     = parseFloat( $quantityBox.attr( 'max' ) ),
+					$minQuantity     = parseFloat( $quantityBox.attr( 'min' ) ),
+					$step            = $quantityBox.attr( 'step' );
+
+				// Fallback default values
+				if ( ! $currentQuantity || '' === $currentQuantity  || 'NaN' === $currentQuantity ) {
+					$currentQuantity = 0;
+				}
+				if ( '' === $maxQuantity || 'NaN' === $maxQuantity ) {
+					$maxQuantity = '';
+				}
+
+				if ( '' === $minQuantity || 'NaN' === $minQuantity ) {
+					$minQuantity = 0;
+				}
+				if ( 'any' === $step || '' === $step  || undefined === $step || 'NaN' === parseFloat( $step )  ) {
+					$step = 1;
+				}
+
+				// Change the value
+				if ( $j( this ).is( '.plus' ) ) {
+
+					if ( $maxQuantity && ( $maxQuantity === $currentQuantity || $currentQuantity > $maxQuantity ) ) {
+						$quantityBox.val( $maxQuantity );
+					} else {
+						$quantityBox.val( $currentQuantity + parseFloat( $step ) );
+					}
+
+				} else {
+
+					if ( $minQuantity && ( $minQuantity === $currentQuantity || $currentQuantity < $minQuantity ) ) {
+						$quantityBox.val( $minQuantity );
+					} else if ( 0 < $currentQuantity ) {
+						$quantityBox.val( $currentQuantity - parseFloat( $step ) );
+					}
+
+				}
+
+				// Trigger change event
+				$quantityBox.trigger( 'change' );
+			}
+		);
+	}
+}
+
+
+}( jQuery ) );
